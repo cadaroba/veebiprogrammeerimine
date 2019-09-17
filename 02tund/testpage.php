@@ -27,7 +27,7 @@
   <p>Veebileht on loodud õppetöö käigus, ei sisalda tõsiselt võetavat sisu!</p>
   <hr>
   <?php
-    echo "<p>Lehe avamise hetkel oli aeg: " .$fullTimeNow .", ".$partOfDay."</p>";
+    echo "<p>Lehe avamise hetkel oli aeg: " .$fullTimeNow .", ".$partOfDay.".</p>";
   ?>
 </body>
 </html>
