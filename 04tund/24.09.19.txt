@@ -1,0 +1,2 @@
+qpäev
+cfg_vp2019.php fail mis hakkab sisaldama paroole

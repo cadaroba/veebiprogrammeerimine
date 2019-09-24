@@ -1,0 +1,2 @@
+päringud kus on tingimused "where=?" bind_param ja bind_result "select"
+kui pealkirja pole siis ei lase talletada infi
