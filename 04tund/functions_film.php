@@ -6,18 +6,33 @@
 	//$conn = new mysqli($serverHost, $serverUsername, $serverPassword, $database);
 	$conn = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], $GLOBALS["database"]);
 	//valmistan ette päringu
-	$stmt = $conn -> prepare("SELECT pealkiri, aasta FROM film"); //pealkiri = $filmTitles
+	$stmt = $conn -> prepare("SELECT pealkiri, zanr, lavastaja, kestus, tootja, aasta FROM film"); //pealkiri = $filmTitles
 	echo $conn -> error;
 	//$filmTitle = "Tühjus";
 	$filmInfoHTML = null; //tühi väärtus muutujal
-	$stmt -> bind_result($filmTitle, $filmYear); //seon stmt
+	$stmt -> bind_result($filmTitle, $filmGenre, $filmDirector, $filmDuration, $filmStudio, $filmYear); //seon stmt
 	$stmt -> execute();
 	//sain pinu (stack) täie infot, hakkan ühekaupe võtma, kuni saab
 	while ($stmt -> fetch()){ //korduva fetchi jaoks on vaja tsüklit	
 		//echo " Pealkiri: " .$filmTitle; see on programmeerijale abiks/pole ilus vaadata
+		
+		//KODUS TEHTUD//KODUS TEHTUD//KODUS TEHTUD//
+		$filmHour = round($filmDuration / 60);
+		$filmMinute = $filmDuration % 60;
+			
+		if ($filmDuration >= 60){
+		$filmDuration = $filmHour." tundi ja ".$filmMinute." minutit";
+		}
+		
+		else{
+		$filmDuration = $filmMinute. " minutit ";
+		}
+		//KUI TUNDE JA MINUTEID 1 SIIS "1TUND JA 1 MINUT"
 		$filmInfoHTML .= "<h3>" . $filmTitle ."</h3>";
-		$filmInfoHTML .= "<p>" . $filmYear ."</p>";
+		$filmInfoHTML .= "<p>Zanr: " . $filmGenre . ", lavastaja: " . $filmDirector . ". Kestus: " . $filmDuration . ". Tootnud: " . $filmStudio . " aastal: " . $filmYear . " </p>";
 	}
+		//KODUS TEHTUD//KODUS TEHTUD//KODUS TEHTUD//
+		
 	//sulgen ühenduse
 	$stmt -> close();
 	$conn -> close();

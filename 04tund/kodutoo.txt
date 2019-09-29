@@ -1,0 +1,38 @@
+Neljas kodune töö on seotud tunnis alustatud filmiinfo lugemise ja kirjutamisega andmebaasi.
+
+Esiteks palun muutke kõikide andmebaasis olevate filmide info lugemist!
+* Lugege kogu info (kõik väljad) ning väljastage filmi info kujul (näiteks):
+Noored kotkad
+Žanr: sõjafilm, lavastaja: Theodor Luts. Kestus: 75 minutit. Tootnud: Siirius Film aastal: 1927.
+
+Ehk siis loetud info väljastamise järjekord on vaja näite järgi teha.
+
+* Täiustage filmi kestuse väljastamise osa! Leidke tundide arv (kestus jagada 60 täisarvuni ümardatult) ja minutite arv (kestuse jagamisel 60-ga saadav jääk .... kestus%60    ).
+Tehke nii, et kui tunde on 0, siis tunde ei näitagi, kui tunde on 1, siis "tund", muidu "tundi" ja kui minuteid on 1, siis "minut", muidu "minutit"!
+See on if ja else harjutus.
+
+* Lisage päring, kus andmebaasist üsitakse mingile tingimusele vastavaid filme (näiteks vanemad kui 50 aastat).
+Selleks tuleb SQL päringule lisada tingimus (näiteks WHERE aasta < ?) ning andmete salvestamisel (andmebaasi saatmisel) kasutatud käsuga ($stmt->bind_param(...    ) saata soovitud aastaarv või muu tingimuses nõutud väärtus.
+Näiteks aastaarvu puhul: $stmt->bind_param("i", $maxYear);
+
+Seejuures, kui kasutate aasta tingimust, tuleb vastav muutuja etteantud vanuse (näiteks 40 aastat või 50 aastat või ...) ja käesoleva aasta arvu (tuleb serverilt küsida) vahena välja arvutada, et näiteks ka järgmisel aastal päring õigesti toimetaks.
+
+* Väljastage selle päringu tulemus esimesena loodud tulemuse järel!
+
+Teiseks täiendage filmide lisamise lehte!
+Tunnis lisasime tingimuse, et kui submit nuppu klikiti, siis kohe salvestatakse.
+Nüüd tuleks selle if-struktuuri sisse lisada tingimus, et kui filmi pealkiri pole tühi (on sisestatud), siis käivitatakse salvestamine (salvestamise käsk läheb seega juba järgmise if lause sisse).
+        if(!empty($_POST["filmTitle"]))
+Siin empty, on funktsioon, mis kontrollib, kas tema sulgudesse kirjutatud väärtus on tühi, hüüumärk ees tähendab eitust, seega !empty kontrollib, et ei ole tühi.
+
+Lisage sellele if lausele ka else, mis annaks kasutajale submit nupu alla teate, et vähemalt pealkirja peaks kirjutama.
+
+Lehe laadimisel tuleks esimese hooga määrata muutujad kõikide filmi info osade algväärtuste jaoks (tekstide jaoks kõik tühjad - null, aasta jaoks käesolev aasta, kestuse jaoks nagu otsustasime 80).
+Siis kohe tuleks need algväärtused kõikide kuue vormis oleva sisestusvälja value atribuudi väärtuse sisse kirjutada.
+ehk siis igal väljal peaks olema: value="<?php echo $muutuja; ?>"
+
+Kui nuppu vajutatakse, siis tuleks kõik sisestatud väärtused neile muutujatele väärtusteks anda. Kui nüüd pealkiri on tühjaks jäetud, siis kirjutatakse ju varem sisestatud väärtused (näiteks aasta, žanr vms) väljadele tagasi ja kasutaja ei pea neid uuesti sisestama.
+
+Kui pealkiri oli olemas ja salvestatakse, siis peaks neile kuuele muutujale taas algväärtused andma!
+
+Edu.ee nagu alati!
