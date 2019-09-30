@@ -17,35 +17,19 @@
 		//echo " Pealkiri: " .$filmTitle; see on programmeerijale abiks/pole ilus vaadata
 		
 		//KODUS TEHTUD//KODUS TEHTUD//KODUS TEHTUD//
-		//FILMITUNNID
 		$filmHour = round($filmDuration / 60);
-		if ($filmHour == 1){
-			$filmHour .= " tund ";
-		}
-		else if ($filmHour == 0){
-			$filmHour = null;
-		}
-		else{
-			$filmHour .= " tundi ";
-		}
-		
-		//FILMIMINUTID
 		$filmMinute = $filmDuration % 60;
-		if($filmMinute == 1){
-			$filmMinute .= "ja". $filmMinute." minut ";
-		}
-		else if ($filmMinute == 0){
-			$filmMinute = null;
-		}
-		else if($filmMinute > 0  and $filmHour == 0){
-			$filmMinute = $filmMinute . "minutit";
-		}
-		else{
-			$filmMinute .= " ja " .$filmMinute. " minutit";
+			
+		if ($filmDuration >= 60){
+		$filmDuration = $filmHour." tundi ja ".$filmMinute." minutit";
 		}
 		
+		else{
+		$filmDuration = $filmMinute. " minutit ";
+		}
+		//KUI TUNDE JA MINUTEID 1 SIIS "1TUND JA 1 MINUT"
 		$filmInfoHTML .= "<h3>" . $filmTitle ."</h3>";
-		$filmInfoHTML .= "<p>Zanr: " . $filmGenre . ", lavastaja: " . $filmDirector . ". Kestus: ".$filmHour.$filmMinute.". Tootnud: " . $filmStudio . " aastal: " . $filmYear . " </p>";
+		$filmInfoHTML .= "<p>Zanr: " . $filmGenre . ", lavastaja: " . $filmDirector . ". Kestus: " . $filmDuration . ". Tootnud: " . $filmStudio . " aastal: " . $filmYear . " </p>";
 	}
 		//KODUS TEHTUD//KODUS TEHTUD//KODUS TEHTUD//
 		

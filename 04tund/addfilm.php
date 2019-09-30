@@ -10,6 +10,17 @@
   storeFilmInfo($_POST["filmTitle"], $_POST["filmYear"], $_POST["filmDuration"], $_POST["filmGenre"], $_POST["filmStudio"], $_POST["filmDirector"]);
   //$filmInfoHTML = readAllFilms();
   
+  //Kui on nuppu vajutatud
+	$pealkiriWarning = null;
+	if(isset($_POST["submitFilm"])){
+		//Salvestame, kui v'hemalt pealkiri on olemas
+		if(!empty($_POST["filmTitle"])){
+			saveFilmInfo($_POST["filmTitle"], $_POST["filmYear"], $_POST["filmDuration"], $_POST["filmGenre"], $_POST["filmCompany"], $_POST["filmDirector"]);
+		} else {
+			$pealkiriWarning = "Vähemalt pealkirja lahter peab olema täidetud!";
+		}
+	}
+  
   }
 	
   require("header.php");
@@ -40,6 +51,9 @@
 	<input type="text" name="filmDirector">
 	<br>
 	<input type="submit" value="Talleta filmi info" name="submitFilm">
+	<?php
+	echo "<p" .$pealkiriWarning. "</p>"
+	?>
   </form>
  
  
