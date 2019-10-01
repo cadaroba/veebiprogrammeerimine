@@ -1,0 +1,41 @@
+	  <label>Sünnipäev: </label>
+		  <?php
+			echo '<select name="birthDay">' ."\n";
+			echo '<option value="" selected disabled>päev</option>' ."\n";
+			for ($i = 1; $i < 32; $i ++){
+				echo '<option value="' .$i .'"';
+				if ($i == $birthDay){
+					echo " selected ";
+				}
+				echo ">" .$i ."</option> \n";
+			}
+			echo "</select> \n";
+		  ?>
+	  <label>Sünnikuu: </label>
+	  <?php
+	    echo '<select name="birthMonth">' ."\n";
+		echo '<option value="" selected disabled>kuu</option>' ."\n";
+		for ($i = 1; $i < 13; $i ++){
+			echo '<option value="' .$i .'"';
+			if ($i == $birthMonth){
+				echo " selected ";
+			}
+			echo ">" .$monthNamesET[$i - 1] ."</option> \n";
+		}
+		echo "</select> \n";
+	  ?>
+	  <label>Sünniaasta: </label>
+	  <?php
+	    echo '<select name="birthYear">' ."\n";
+		echo '<option value="" selected disabled>aasta</option>' ."\n";
+		for ($i = date("Y") - 15; $i >= date("Y") - 110; $i --){
+			echo '<option value="' .$i .'"';
+			if ($i == $birthYear){
+				echo " selected ";
+			}
+			echo ">" .$i ."</option> \n";
+		}
+		echo "</select> \n";
+	  ?>
+	  <br>
+	  <span><?php echo $birthDateError ." " .$birthDayError ." " .$birthMonthError ." " .$birthYearError; ?></span>

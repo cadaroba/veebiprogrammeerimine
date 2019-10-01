@@ -1,0 +1,20 @@
+//kontrollime, kas sünniaeg sisestati ja kas on korrektne
+  if(isset($_POST["birthDay"]) and !empty($_POST["birthDay"])){
+	  $birthDay = intval($_POST["birthDay"]);
+  } else {
+	  $birthDayError = "Palun vali sünnikuupäev!";
+  }
+  
+  if(isset($_POST["birthMonth"]) and !empty($_POST["birthMonth"])){
+	  $birthMonth = intval($_POST["birthMonth"]);
+  } else {
+	  $birthMonthError = "Palun vali sünnikuu!";
+  }
+  
+  if(isset($_POST["birthYear"]) and !empty($_POST["birthYear"])){
+	  $birthYear = intval($_POST["birthYear"]);
+  } else {
+	  $birthYearError = "Palun vali sünniaasta!";
+  }
+  
+ 
