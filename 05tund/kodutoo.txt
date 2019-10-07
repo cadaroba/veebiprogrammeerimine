@@ -1,1 +1,23 @@
-praegu puudub
+Viies kodutöö on seotud kasutajate loomise ja juba ka sisselogimisega.
+
+Esiteks lisage uue kasutaja loomise lehele puuduolevad sisestatud info kontrollid (perekonnanimi, sugu, email ja parool. Parooli osas on vaja kontrollida, kas on üldse sisestatud, kas parooli pikkus on vähemalt 8 märki:
+strlen($_POST["password"]) < 8
+
+Lisaks peab kontrollima kas parool on kaks korda ühte moodi sisestatud (kas mõlemad sisestused on võrdsed).
+
+Teiseks lisage meie senisele põhilehele (kus on näha info semestri kulgemise kohta ning ka juhuslik foto ülikoolist) sisselogimise vorm. See peab sisaldama väljasid emaili ehs kasutajatunnuse ning parooli jaoks ja sisselogimise nuppu.
+Sisselogimisfunktsioon peab käivituma vaid, kui on sisestatud nii kasutajatunnus kui ka parool.
+
+Kui kasutajatunnus ja parool on mõlemad sisestatud, siis käivitage funktsioon sisselogimiseks. Tehke seda nii, et saaks ka mingi sõnumi kätte. Näiteks: $notice = signIn($email, $_POST["password"]);
+
+Sisselogimisfunktsioonis tuleb püüda lugeda andmebaasist sellise kasutajatunnusega kasutaja parooli. Kui lugemine õnnestub:
+if($stmt->fetch())
+
+Siis selline kasutaja on olemas ning tuleb kontrollida, kas parool on õige:
+if(password_verify($password, $passwordFromDb))
+
+Kui parool ka õige, siis tuleks andmebaasist lugeda (uus päring) eesnimi ja perekonnanimi ja moodustada teade, et "Sisse logis see ja see".
+
+Kui kasutajat pole või on sisestatud vale parool, siis peaks kasutajale ka vastava teate moodustama.
+
+Sisselogimise kohta peab sisselogimise nupu kõrval näitama teadet.
