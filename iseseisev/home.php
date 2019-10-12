@@ -29,18 +29,10 @@
 	body{background-color: #e8eaf9; 
 	color: #000000} 
   </style>
+  
   </head>
   <p>Veebileht on loodud õppetöö käigus, ei sisalda tõsiselt võetavat sisu.</p>
-  
-  <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
-	  <label>Minu kirjeldus</label><br>
-	  <textarea rows="10" cols="80" name="description"><?php echo $mydescription; ?></textarea>
-	  <br>
-	  <label>Minu valitud taustavärv: </label><input name="bgcolor" type="color" value="<?php echo $mybgcolor; ?>"><br>
-	  <label>Minu valitud tekstivärv: </label><input name="txtcolor" type="color" value="<?php echo $mytxtcolor; ?>"><br>
-	  <input name="submitProfile" type="submit" value="Salvesta profiil">
-	</form>
- 
+  <p>Kliki <a href="userprofile.php"> siia</a>, et muuta oma profiili.</p>
   <hr>
   <br>
   <p> Sisse logitud kasutajaga <?php echo $userName; ?> | Logi <a href="?logout=1"> välja</a>!</p>

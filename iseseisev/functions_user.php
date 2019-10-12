@@ -73,10 +73,20 @@ function signUp($name, $surname, $email, $gender, $birthDate, $password){
 	return $notice;
   }//sisselogimine lõppes
   
-  function profileInfo($mydescription, $mybgcolor, $mytxtcolor){
-	$notice = "";
+  function saveProfile($mydescription, $mybgcolor, $mytxtcolor){
+	  //KASUTAJA SALVESTAMINE ALGAB
+	  $notice = "";
 	$mysqli = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], $GLOBALS["database"]);
-	$stmt = $mysqli->prepare("SELECT password FROM vpusers1 WHERE email=?");
-	
-	///////////POOLIK///////////
-	  
+	$stmt = $mysqli->prepare("INSERT INTO vpuserprofiles (description, bgcolor, txtcolor) VALUES (?, ?, ?)");
+	$stmt->bind_param("sss", $mydescription, $mybgcolor, $mytxtcolor);
+	if($stmt->execute()){//kui päring õnnesub
+	  $notice = "Profiili salvestamine õnnestus";
+	} else {
+		$notice = "Profiili salvestamisel tekkis probleem";
+		$stmt->error;
+	}
+	$stmt->close();
+	$mysqli->close();
+	return $notice;
+	//KASUTAJA SALVESTAMINE LÕPPEB
+  }
