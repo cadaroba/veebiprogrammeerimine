@@ -48,6 +48,7 @@ function signUp($name, $surname, $email, $gender, $birthDate, $password){
 		  $_SESSION["userId"] = $idFromDb;
 		  $_SESSION["userFirstname"] = $firstnameFromDb;
 		  $_SESSION["userLastname"] = $lastnameFromDb;
+		  loadColor();
 		  
 		  
 		  //kuna siirdume teisele lehele, sulgeme andmebaasi ühendused
@@ -77,8 +78,11 @@ function signUp($name, $surname, $email, $gender, $birthDate, $password){
 	  //KASUTAJA SALVESTAMINE ALGAB
 	  $notice = "";
 	$mysqli = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], $GLOBALS["database"]);
-	$stmt = $mysqli->prepare("INSERT INTO vpuserprofiles (description, bgcolor, txtcolor) VALUES (?, ?, ?)");
-	$stmt->bind_param("sss", $mydescription, $mybgcolor, $mytxtcolor);
+	$stmt = $mysqli->prepare("INSERT INTO vpuserprofiles (userid, description, bgcolor, txtcolor) VALUES (?, ?, ?, ?)");
+	$stmt->bind_param("isss", $idFromDb, $mydescription, $mybgcolor, $mytxtcolor);
+	
+	  $idFromDb = $_SESSION["userId"];
+	  
 	if($stmt->execute()){//kui päring õnnesub
 	  $notice = "Profiili salvestamine õnnestus";
 	} else {
@@ -90,3 +94,23 @@ function signUp($name, $surname, $email, $gender, $birthDate, $password){
 	return $notice;
 	//KASUTAJA SALVESTAMINE LÕPPEB
   }
+  
+  function loadColor(){
+  	$notice = "";
+		$mysqli = new mysqli($GLOBALS['serverHost'], $GLOBALS['serverUsername'], $GLOBALS['serverPassword'], $GLOBALS['database']);
+		//$stmt = $mysqli->prepare("SELECT idea, color FROM vpuserideas");
+		$stmt = $mysqli->prepare("SELECT description, bgcolor, txtcolor FROM vpuserprofiles WHERE userid = ? ORDER BY id DESC");
+		
+		$stmt->bind_param("i", $_SESSION["userId"]);
+		
+		$stmt->bind_result($description, $bgcolor,$txtcolor);
+		$stmt->execute();
+		$stmt->fetch();
+		$_SESSION["description"] = $description;
+		$_SESSION["bgColor"] = $bgcolor;
+		$_SESSION["txtColor"] = $txtcolor;
+		
+		$stmt->close();
+		$mysqli->close();
+		
+	}

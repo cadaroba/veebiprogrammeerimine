@@ -1,3 +1,9 @@
+
+<style>
+	body{background-color: #e8eaf9; 
+	color: #000000} 
+ </style>
+
 <?php
   //Leht kui olen sisse loginud
   require("../../../config_vp2019.php");
@@ -15,8 +21,6 @@
 	  header("Location: page.php");
 	  exit();
   }
-	  
-  
   
   $userName = $_SESSION["userFirstname"] . " " .$_SESSION["userLastname"];
   
@@ -24,13 +28,23 @@
 
   echo "<h1>" . $userName .", veebiprogrammeerimine</h1>";
 ?>
-  <head>
-  <style>
-	body{background-color: #e8eaf9; 
-	color: #000000} 
-  </style>
+
+<!DOCTYPE html>
+<head>
   
   </head>
+<html>
+    <meta charset="utf-8">
+	<style>
+	  <?php
+        echo "body{background-color: " .$_SESSION["bgColor"] ."; \n";
+		echo "color: " .$_SESSION["txtColor"] ."} \n";
+	  ?>
+	</style>
+  
+  <body>
+  <div align ="center" > <?php    echo $_SESSION["description"] ?> </div>
+  </body>
   <p>Veebileht on loodud õppetöö käigus, ei sisalda tõsiselt võetavat sisu.</p>
   <p>Kliki <a href="userprofile.php"> siia</a>, et muuta oma profiili.</p>
   <hr>

@@ -1,5 +1,6 @@
 <?php
   //Leht kui olen sisse loginud
+  require("functions_main.php");
   require("../../../config_vp2019.php");
   require("functions_user.php");
   $database = "if19_robin_ka_1";
@@ -8,6 +9,42 @@
   if(!isset($_SESSION["userId"])){
 	  header("Location: page.php");
 	  exit();
+  }
+  
+  $notice = "";
+  $mydescription = "";
+  $mybgcolor = "#FFFFFF";
+  $mytxtcolor = "#000000";
+  $mydescriptionError = null;
+  $mybgcolorError = null;
+  $mytxtcolorError = null;
+  $idFromDb = $_SESSION["userId"];
+  
+  if(isset($_POST["submitProfile"])){
+	  
+	  if(isset($_POST["description"]) and !empty($_POST["description"])){
+	    $mydescription = ($_POST["description"]);
+	  } else {
+		$mydescriptionError = "Palun sisesta enda kirjeldus!";
+	  }
+	  
+	  if(isset($_POST["bgcolor"]) and !empty($_POST["bgcolor"])){
+	  $mybgcolor = ($_POST["bgcolor"]);
+	  } else {
+		  $mybgcolorError =" Palun vali värv!";
+	  }
+	  
+	  if(isset($_POST["txtcolor"]) and !empty($_POST["txtcolor"])){
+	  $mytxtcolor = ($_POST["txtcolor"]);
+	  } else {
+		  $mytxtcolorError = "Palun värvi texti värvus";
+	  }
+	  
+      if(empty($mydescriptionError) and empty($mybgcolorError) and empty($mytxtcolorError)){
+		  $notice = saveProfile($mydescription, $mybgcolor, $mytxtcolor);
+		  
+	  }
+	  
   }
 
   
@@ -19,10 +56,6 @@
   echo "<h1>" . $userName .", muudab profiili välimust</h1>";
 ?>
   <head>
-  <style>
-	body{background-color: #e8eaf9; 
-	color: #000000} 
-  </style>
   
   </head>
   <p>Veebileht on loodud õppetöö käigus, ei sisalda tõsiselt võetavat sisu.</p>
