@@ -1,0 +1,61 @@
+<?php
+      
+  $notice = null;
+  $name = null;
+  $surname = null;
+  $email = null;
+  $gender = null;
+  $birthMonth = null;
+  $birthYear = null;
+  $birthDay = null;
+  $birthDate = null;
+  $monthNamesET = ["jaanuar", "veebruar", "märts", "aprill", "mai", "juuni","juuli", "august", "september", "oktoober", "november", "detsember"];
+  
+  //muutujad võimalike veateadetega
+  $nameError = null;
+  $surnameError = null;
+  $birthMonthError = null;
+  $birthYearError = null;
+  $birthDayError = null;
+  $birthDateError = null;
+  $genderError = null;
+  $emailError = null;
+  $passwordError = null;
+  $confirmpasswordError = null;
+  
+  //kui on uue kasutaja loomise nuppu vajutatud
+  
+?>
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+	<title>Katselise veebi uue kasutaja loomine</title>
+  </head>
+  <body>
+    <h1>Loo endale kasutajakonto</h1>
+	<p>See leht on valminud TLÜ õppetöö raames ja ei oma mingisugust, mõtestatud või muul moel väärtuslikku sisu.</p>
+	<hr>
+	
+	<form method="POST">
+	  <label>Eesnimi:</label><br>
+	  <input name="firstName" type="text" value="<?php echo $name; ?>"><span><?php echo $nameError; ?></span><br>
+      <label>Perekonnanimi:</label><br>
+	  <input name="surName" type="text" value="<?php echo $surname; ?>"><span><?php echo $surnameError; ?></span><br>
+	  
+	    
+	  <br>
+	  
+	  <label>E-mail (kasutajatunnus):</label><br>
+	  <input type="email" name="email" value="<?php echo $email; ?>"><span><?php echo $emailError; ?></span><br>
+	  <label>Salasõna (min 8 tähemärki):</label><br>
+	  <input name="password" type="password"><span><?php echo $passwordError; ?></span><br>
+	  <label>Korrake salasõna:</label><br>
+	  <input name="confirmpassword" type="password"><span><?php echo $confirmpasswordError; ?></span><br>
+	  <input name="submitUserData" type="submit" value="Loo kasutaja"><span><?php echo $notice; ?></span>
+	</form>
+	<hr>
+		
+  </body>
+</html>

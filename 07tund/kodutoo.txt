@@ -1,0 +1,2 @@
+1. Parooli muutmine kasutaja loomisel ja lihtsalt vahetamisel koos kontrolliga
+2. SQL viies tabel userid ja filmId kokku pandud
