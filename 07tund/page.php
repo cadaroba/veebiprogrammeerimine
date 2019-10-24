@@ -106,13 +106,17 @@
 			$notice = "Ei saa sisse logida!";
 		}
 	  }
-	  
-	  
-	  require("header.php"); //nõuab tükki minu kasutast
-
-  echo "<h1>" . $userName ."</h1>";
 ?>
-  <h1>Esimene test</h1>
+
+<!DOCTYPE html>
+<html lang="et">
+  <head>
+    <meta charset="utf-8">
+		<title>Veebiprogrammeerimine, 2019, Robin</title>
+  </head>
+  <body>
+    <h1>Veebiprogrammeerimine</h1>
+	
   <p>Veebileht on loodud õppetöö käigus, ei sisalda tõsiselt võetavat sisu!</p>
   <?php
 	echo $semesterInfoHTML;
@@ -133,7 +137,7 @@
 	  <input name="login" type="submit" value="Logi sisse">&nbsp;<span><?php echo $notice; ?>
 	</form>
 	<br>
-	<h2>Kui pole kasutajkontot</h2>
+	<h2>Kui pole kasutajakontot</h2>
 	<p>Loo <a href="newuser.php"> kasutajakonto</a>!</p>
   
   <?php

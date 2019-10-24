@@ -2,6 +2,7 @@
   //Leht kui olen sisse loginud
   require("../../../config_vp2019.php");
   require("functions_user.php");
+  require("functions_main.php");
   $database = "if19_robin_ka_1";
   
   //kontrollime kas on sisse logitud, kui kasutaja üritab ilma kasutajata sisse logida siis viskab siia
@@ -16,29 +17,30 @@
 	  exit();
   }
   
-  $profileDescHTML = showMyDesc();
+  $myDescription = showMyDesc();
 	  
   $userName = $_SESSION["userFirstname"] . " " .$_SESSION["userLastname"];
   
   require("header.php"); //nõuab tükki minu kasutast
 
   echo "<h1>" . $userName .", veebiprogrammeerimine</h1>";
+  
 ?>
   <p>Veebileht on loodud õppetöö käigus, ei sisalda tõsiselt võetavat sisu.</p>
   <hr>
   <ul>
   <li>Minu <a href="messages.php"> sõnumid</a></li>
-  <li>Minu <a href="userprofile.php"> profiil</a></li>
+  <li>Muuda <a href="userprofile.php"> profiili</a></li>
   </ul>
   <h2>Profiili kirjeldus</h2>
   
   <?php
-	echo $profileDescHTML
+	echo $myDescription
   ?>
   
   <hr>
   <br>
-  <p>Sisse logitud kasutajaga <?php echo $userName; ?> | Logi <a href="?logout=1"> välja</a>!</p>
+  <p>Sisse logitud kasutajaga <?php echo $userName; ?> | Logi <a href="?logout=1"> välja</a></p>
   
 </body>
 </html>

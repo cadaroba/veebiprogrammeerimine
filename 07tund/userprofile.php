@@ -11,42 +11,17 @@
 	  exit();
   }
   
-  $notice = "";
-  $mydescription = "";
-  $mybgcolor = "";
-  $mytxtcolor = "";
-  $mydescriptionError = null;
-  $mybgcolorError = null;
-  $mytxtcolorError = null;
-  $idFromDb = $_SESSION["userId"];
-  
-  if(isset($_POST["submitProfile"])){
-	  $notice = saveProfile($_POST["description"], $_POST["bgcolor"], $_POST["txtcolor"]);
-	  
-	  if(isset($_POST["description"]) and !empty($_POST["description"])){
-	    $mydescription = ($_POST["description"]);
-	  } else {
-		$mydescriptionError = "Palun sisesta enda kirjeldus!";
-	  }
-	  
-	  if(isset($_POST["bgcolor"]) and !empty($_POST["bgcolor"])){
-	  $mybgcolor = ($_POST["bgcolor"]);
-	  } else {
-		  $mybgcolorError =" Palun vali värv!";
-	  }
-	  
-	  if(isset($_POST["txtcolor"]) and !empty($_POST["txtcolor"])){
-	  $mytxtcolor = ($_POST["txtcolor"]);
-	  } else {
-		  $mytxtcolorError = "Palun värvi texti värvus";
-	  }
-	  
-      if(empty($mydescriptionError) and empty($mybgcolorError) and empty($mytxtcolorError)){
-		  $notice = saveProfile($mydescription, $mybgcolor, $mytxtcolor);
-		  
-	  }
-	  
+  //väljalogimine
+  if(isset($_GET["logout"])){
+	  session_destroy();
+	  header("Location: page.php");
+	  exit();
   }
+  
+  $notice = null;
+  $myDescription = null;
+ 
+ 
 
  if(isset($_POST["submitProfile"])){
 	$notice = saveProfile($_POST["description"], $_POST["bgcolor"], $_POST["txtcolor"]);
@@ -67,23 +42,28 @@
   
   require("header.php"); //nõuab tükki minu kasutast
 
-  echo "<h1>" . $userName .", muudab profiili välimust</h1>";
-?>
-  <head>
   
+?>
+<head>
+  <h1> <?php echo $userName ?>, muudab profiili välimust</h1>
   </head>
+
+<body>
+  
   <p>Veebileht on loodud õppetöö käigus, ei sisalda tõsiselt võetavat sisu.</p>
   <hr>
   
  <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
 	  <label>Minu kirjeldus</label><br>
-	  <textarea rows="10" cols="80" name="description"><?php echo $mydescription; ?></textarea> <br><span><?php echo $mydescriptionError; ?></span><br>
+	  <textarea rows="10" cols="80" name="description" placeholder="Lisage siia tutvustus..."><?php echo $myDescription; ?></textarea>
+	  <br>
 	  <label>Minu valitud taustavärv: </label><input name="bgcolor" type="color" value="<?php $_SESSION["bgColor"]; ?>"><br>
 	  <label>Minu valitud tekstivärv: </label><input name="txtcolor" type="color" value="<?php echo $_SESSION["txtColor"]; ?>"><br>
 	  <input name="submitProfile" type="submit" value="Salvesta profiil"><span><?php echo $notice; ?></span>
  </form>
 
   <br>
+  <p>Muuda <a href="changepassword.php"> parooli</a></p>
   <p> Mine tagasi <a href="home.php">avalehele</a></p>
   
 </body>
