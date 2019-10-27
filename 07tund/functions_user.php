@@ -146,12 +146,38 @@ function signUp($name, $surname, $email, $gender, $birthDate, $password){
 	return $notice;
   }
   
-  function changePassword($email, $password){
-	$notice = "";
+  function changePassword($oldPassword, $newPassword){//esimeses pooles kontrollitakse parooli
+	$notice = null;
 	$conn = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], $GLOBALS["database"]);
-    $stmt = $conn->prepare("SELECT id FROM vpuserprofiles WHERE userid=?");
-	echo $conn->error;
-	$stmt->bind_param("i", $_SESSION["userId"]);
-	$stmt->bind_result($idFromDb);
-	$stmt->execute();
-  }
+	$stmt = $conn -> prepare("SELECT password FROM vpusers1 WHERE id = ?");
+	echo $conn -> error;
+	$stmt -> bind_param("i", $_SESSION["userId"]);
+	$stmt -> bind_result($oldPasswordFromDb);
+	if($stmt -> execute()){//kui päring õnnestub
+		if($stmt -> fetch()){//kontrollime kas kasutaja olemas
+			if(password_verify($oldPassword, $oldPasswordFromDb)){//kui salasõna klapib
+			  $stmt -> close();
+			  //algab passwordi ülekirjutamise funktsioon
+			  $stmt = $conn -> prepare("UPDATE vpusers1 SET password = ? WHERE id = ?");
+			  echo $conn -> error;
+			  $options = ["cost" => 12, "salt" => substr(sha1(rand()), 0, 22)];
+			  $newpwdhash = password_hash($newPassword, PASSWORD_BCRYPT, $options);
+			  $stmt -> bind_param("si", $newpwdhash, $_SESSION["userId"]);
+				if($stmt -> execute()){
+				$notice = "Kasutaja andmed edukalt uuendatud";
+				} else {
+				$notice = "Kasutaja salvestamisel tekkis tehniline tõrge.. " .$stmt -> error;
+				}
+				$conn -> close();
+			} else {
+				echo "Salasõnad ei klapi";
+			}
+		} else {
+			echo "Kasutajat ei eksisteeri (fetch)";
+		}
+	} else {
+		echo "Päring ei õnnestu (execute)";
+	}
+	return $notice;
+	}
+	
