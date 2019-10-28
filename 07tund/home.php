@@ -30,6 +30,7 @@
   <hr>
   <ul>
   <li>Minu <a href="messages.php"> sõnumid</a></li>
+  <li>Minu <a href="movies.php"> filmid</a></li>
   <li>Muuda <a href="userprofile.php"> profiili</a></li>
   </ul>
   <h2>Profiili kirjeldus</h2>

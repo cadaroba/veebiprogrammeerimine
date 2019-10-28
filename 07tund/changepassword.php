@@ -13,17 +13,24 @@
 	  exit();
   }
   
+  if(isset($_GET["submitpasswordChange"])){
+    session_destroy();
+	echo "LOGI UUESTI SISSE";
+    header("Location: page.php");
+    exit();
+  }
+  
   $notice = "";
-  $oldPassword = "";
-  $newPassword = "";
-  $confirmPassword = "";
+  $oldPassword = null;
+  $newPassword = null;
+  $confirmPassword = null;
   $oldPasswordError = null;
   $newPasswordError = null;
   $confirmPasswordError = null;
  
   
   if (isset($_POST["submitpasswordChange"])){
-	  if (!empty($_POST["oldPassword"]) and (isset($_POST["oldPassword"]) == $_SESSION["oldPassword"])){
+	  if (!empty($_POST["oldPassword"]) and (isset($_POST["oldPassword"]))){
 		$oldPassword = $_POST["oldPassword"];
 		} else {
 		$oldPasswordError = " Parool ei klapi vana parooliga";
@@ -40,7 +47,6 @@
 	  }
 	  if(empty($oldPasswordError) and empty($newPasswordError) and empty($confirmPasswordError)){
 	  $notice = changePassword($oldPassword, $newPassword);
-	  echo $notice;
 	  }
   }
 
@@ -55,11 +61,12 @@
   
    <form method = "POST" action = '<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>'>
 		<label>Vana salasõna:</label><br>
-		<input name = "oldPassword" type = "text" value = "<?php echo $oldPassword;?>"><?php echo $oldPasswordError;?><br>
+		<input name = "oldPassword" type = "password" value = "<?php echo $oldPassword;?>"><?php echo $oldPasswordError;?><br>
 		<label>Uus salasõna:</label><br>
-		<input name = "newPassword" type = "text" value = "<?php echo $newPassword;?>"><span><?php echo $newPasswordError; ?></span><br>
+		<input name = "newPassword" type = "password"><span><?php echo $newPasswordError; ?></span><br>
 		<label>Korda salasõna:</label><br>
 		<input name = "confirmPassword" type = "password"><span><?php echo $confirmPasswordError; ?></span><br>
 		<input name = "submitpasswordChange" type = "submit" value = "Vaheta parool"><?php echo $notice; ?> <br>
+		<p>Tagasi <a href="userprofile.php">kasutajaprofiilile</a></p>
    </form>
   </html>
