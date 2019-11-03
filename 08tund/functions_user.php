@@ -182,21 +182,3 @@ function signUp($name, $surname, $email, $gender, $birthDate, $password){
 	return $notice;
 	}
 	
-	function readMyMovies(){
-	$notice = null;
-	$conn = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], $GLOBALS["database"]);
-	//$stmt = $conn->prepare("SELECT message, created FROM vpmsg3");
-	$stmt = $conn->prepare("SELECT Film_ID, Pealkiri, Aasta, Kestus FROM FILM");
-	echo $conn->error;
-	$stmt->bind_result($filmIDFromDb, $pealkiriFromDb, $aastaFromDb, $kestusFromDb);
-	$stmt->execute();
-	while ($stmt->fetch()) {
-		$notice .= "<p>" . $filmIDFromDb . ". " . $pealkiriFromDb ." (Valmimisaasta: ". $aastaFromDb .").</p>Kestus: ". $kestusFromDb ." minutit";
-	}
-	if (empty($notice)) {
-		$notice = "<p>Otsitud filme ei leitud!</p> \n";
-	}
-	$stmt->close();
-	$conn->close();
-	return $notice;	
-}

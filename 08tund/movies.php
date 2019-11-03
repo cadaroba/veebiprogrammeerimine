@@ -20,44 +20,48 @@
     exit();
   }
   
+  $filmTitle = null;
+  $filmYear = date("Y");
+  $filmDuration = 80;
+  $filmGenre = null;
+  $filmStudio = null;
+  $filmDirector = null;
+  
+  $notice = "";
+  
   $userName = $_SESSION["userFirstname"] ." " .$_SESSION["userLastname"];
-  
-  $notice = null;
-  $messagesHTML = null;
 
-
-  
-  if(isset($_POST["submitMessage"])){
-    if(isset($_POST["message"]) and !empty($_POST["message"])) {
-      $notice = storeMessage(test_input($_POST["message"]));
+  if(isset($_POST["submitFilm"])){
+    if(isset($_POST["film"]) and !empty($_POST["film"])) {
+      $notice = storeFilmInfo(test_input($_POST["film"]));
     }
   }
   //
   //$messagesHTML = readAllMessages();
   //$messagesHTML = readMyMessages();
-    $moviesHTML = readMyMovies();
+    $allFilmsHTML = readAllFilms();
   require("header.php");
 
-  $title = $filmDescription = $company = $maker = $pealkiri = "";
-  $year = '2019';
-  $time = '80';
-  //var_dump($_POST);
-  //kui on nuppu vajutatud
-  if(isset($_POST["submitFilm"])) {
-  //salvestame, kui vähemalt pealkiri on olemas
-    
-    if(!empty($_POST["filmTitle"])){  
-      storeFilmInfo($_POST["filmTitle"],$_POST["filmYear"], $_POST["filmDuration"], $_POST["filmDescription"]);
-    }
-    else {
-      
-      $year = $_POST["filmYear"];
-      $time = $_POST["filmDuration"];
-      $filmDescription = $_POST["filmDescription"];
-
-      $pealkiri = '<h2 style="color:red;">Palun sisesta pealkiri!</h2>';
-    }
-
+ if(isset($_POST["submitFilm"])){
+	$filmTitle = $_POST["filmTitle"];
+    $filmYear = $_POST["filmYear"];
+    $filmDuration = $_POST["filmDuration"];
+    $filmGenre = $_POST["filmGenre"];
+    $filmStudio = $_POST["filmStudio"];
+    $filmDirector = $_POST["filmDirector"];
+	//salvestame, kui vähemalt pealkiri on olemas
+	if(!empty($_POST["filmTitle"])){
+	  //saveFilmInfo($_POST["filmTitle"], $_POST["filmYear"], $_POST["filmDuration"], $_POST["filmGenre"], $_POST["filmStudio"], $_POST["filmDirector"]);
+	  storeFilmInfo($filmTitle, $filmYear, $filmDuration, $filmGenre, $filmStudio, $filmDirector);
+	  $filmTitle = null;
+      $filmYear = date("Y");
+      $filmDuration = 80;
+      $filmGenre = null;
+      $filmStudio = null;
+      $filmDirector = null;
+	} else {
+		$notice = "Palun sisestage vähemalt filmi pealkiri!";
+	}
   }
 
 
@@ -70,30 +74,41 @@
   ?>
   <p>See leht on loodud koolis õppetöö raames
   ja ei sisalda tõsiseltvõetavat sisu!</p>
+  <p><?php echo $notice ?></p> 
   <hr>
   
   <form method="POST">
-  <label>Sisesta pealkiri: </label><input type="text" name="filmTitle" value="<?php echo $title?>">
-  <br>
-  <label>Filmi tootmisaasta: </label><input type="number" min="1912" max="2019"
-  value="<?php echo $year?>" name="filmYear">
-  <br>
-  <label>Filmi kestus (min): </label><input type="number" min="1" max="300" value="<?php echo $time?>" name="filmDuration">
-  <br>
-  <label>Filmi Lühikirjeldus: </label><input type="text" name="filmDescription" value="<?php echo $filmDescription?>">
-  <br>
-  <input type="submit" value="Salvesta film" name="submitFilm">
-  <p>Tagasi <a href="home.php">avalehele</a></p>
-  <br>
-
-
+	  <label>Sisesta pealkiri: </label>
+	  <input type="text" name="filmTitle" value="<?php echo $filmTitle?>">
+	  <br>
+	  <label>Filmi tootmisaasta: </label>
+	  <input type="number" min="1912" max="2019" value="<?php echo $filmYear?>" name="filmYear">
+	  <br>
+	  <label>Filmi kestus: </label>
+	  <input type="number" min="1" max="300" value="<?php echo $filmDuration?>" name="filmDuration">
+	  <br>
+	  <label>Filmi žanr: </label>
+	  <input type="text" value="<?php echo $filmGenre; ?>" name="filmGenre">
+	  <br>
+	  <label>Filmi tootja: </label>
+	  <input type="text" value="<?php echo $filmStudio; ?>" name="filmStudio">
+	  <br>
+	  <label>Filmi lavastaja: </label>
+	  <input type="text" value="<?php echo $filmDirector; ?>" name="filmDirector">
+	  <br>
+	  <label>Filmi lühikirjeldus:</label>
+	  <br> <textarea rows="5" cols="50" name="film" placeholder="Lisa siia filmi lühikirjeldus ..."></textarea>
+	  <br>
+	  <input type="submit" value="Salvesta film" name="submitFilm">
+	  <p>Tagasi <a href="home.php">avalehele</a></p>
+	  <br>
   </form>
 
   <hr>
-  <h2>Filmide info</h2>
+  <h2>Andmebaasis olevad filmid</h2>
   <?php 
-    echo $moviesHTML;
+    echo $allFilmsHTML;
   ?>
-  
+ 
 </body>
 </html>
