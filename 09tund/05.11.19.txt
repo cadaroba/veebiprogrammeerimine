@@ -1,0 +1,5 @@
+qpäev
+tegelesime Pilte üleslaadimise lehel -> classes functionitega, construct, deconstruct, watermark pildile, 
+
+KODUNE
+Kogu pildi kontrollimine panna classi, ka pildi nime tegemise, setpicsize ümber ehitada, nii et vajaduse korral lõikaks servad maha... või vesimärgi pistmine valikuline 4 nurka või keskele
