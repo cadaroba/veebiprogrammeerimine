@@ -33,6 +33,7 @@
   <li>Minu <a href="movies.php"> filmid</a></li>
   <li>Muuda <a href="userprofile.php"> profiili</a></li>
   <li>Piltide <a href="picupload.php"> üleslaadimine</a></li>
+  <li>Avalike piltide <a href="publicgallery.php"> galerii</a></li>
   </ul>
   <h2>Profiili kirjeldus</h2>
   

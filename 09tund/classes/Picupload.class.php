@@ -1,64 +1,163 @@
 <?php
   class Picupload {
+	  private $picToUpload;
 	  private $imageFileType;
-	  private $tmpPic;
 	  private $myTempImage;
 	  private $myNewImage;
+	  private $timeStamp;
+	  private $fileSizeLimit;
+	  public $error;
+	  public $filename;
+	  //public $imageFileType;
 	  
-	  function __construct($tmpPic, $imageFileType){
-		  $this->imageFileType = $imageFileType;
-		  $this->tmpPic = $tmpPic;
-		  $this->createImageFromFile();
+	  function __construct($tmpPic, $fileSizeLimit){
+		  $this->error = null;
+		  $this->checkImageForUpload();
+		  $this->fileSizeLimit = $fileSizeLimit;
+		  $this->timeStamp = microtime(1) * 10000;
+		  $this->picToUpload = $picToUpload;
+		  //$this->fileExists = $target_file;
 	  }//construct end
 	  
 	  function __destruct(){
-		  imagedestroy($this->myTempImage);
-	  }//destruct end
+		if(isset($this->error)){
+			imagedestroy($this->myTempImage);
+		}
+	  }
 	  
-	  public function addWatermark($wmFile){//wmFile = watermark file
+	  
+	  public function addWatermark($wmFile, $wmLocation, $fromEdge){//wmFile = watermark file
 		  $waterMark = imagecreatefrompng($wmFile);
 		  $waterMarkW = imagesx($waterMark);
 		  $waterMarkH = imagesy($waterMark);
 		  $waterMarkX = imagesx($this->myNewImage) - $waterMarkW - 10;
 		  $waterMarkY = imagesy($this->myNewImage) - $waterMarkH - 10;
+		  if($wmLocation == 1 or $wmLocation == 4){
+			  $waterMarkX = $fromEdge;
+		  }
+		  if($wmLocation == 2 or $wmLocation == 3){
+			  $waterMarkX = imagesx($this->myNewImage) - $waterMarkW - $fromEdge;
+		  }
+		  if($wmLocation == 1 or $wmLocation == 2){
+			  $waterMarkY = $fromEdge;
+		  }
+		  if($wmLocation == 3 or $wmLocation == 4){
+			  $waterMarkY = imagesy($this->myNewImage) - $waterMarkH - $fromEdge;
+		  }
+		  if($wmLocation == 5){
+			  $waterMarkX = round((imagesx($this->myNewImage) - $waterMarkW) / 2, 0);
+			  $waterMarkY = round((imagesy($this->myNewImage) - $waterMarkH) / 2, 0);
+		  }
 		  imagecopy($this->myNewImage, $waterMark, $waterMarkX, $waterMarkY, 0, 0, $waterMarkW, $waterMarkH);
 	  }//addWatermark end
 	  
-	  private function createImageFromFile(){
+	  private function checkImageForUpload(){
+		  		  //kas on pilt
+		  $check = getimagesize($this->picToUpload["tmp_name"]);
+		  if($check == false){
+			  $this->error = 1;
+		  }
+		  //failitüüp
+		  if($check["mime"] == "image/jpeg"){
+			  $this->imageFileType = "jpg";
+		  }
+		  if($check["mime"] == "image/png"){
+			  $this->imageFileType = "png";
+		  }
+		  if($check["mime"] == "image/gif"){
+			  $this->imageFileType = "gif";
+		  }//failitüüp end
+		  
+		  //kas sobiv suurus
+		  if ($this->error == null and $this->picToUpload["size"] > $this->fileSizeLimit) {
+			  $this->error = 2;
+		  }//sobiv suurus end
+		 
+		 //kas lubatud tüüp
+		  if($this->imageFileType != "jpg" and $this->imageFileType != "png" and $this->imageFileType != "gif" ) {
+			  $this->error = 3;
+		  }//lubatud tüüp end
+		  if($this->error == null){
+			  $this->myTempImage = $this->createImageFromFile($this->picToUpload["tmp_name"]);
+		  }//pildiobjekt end
+		  
+		  //kas fail eksisteerib
+		  //if($this->fileExists != NULL){
+			//  $this->error = 4;
+		  }//checkImageForUpload end
+	  
+	  private function createImageFromFile($imageFile){
 		  if($this->imageFileType == "jpg" or $this->imageFileType == "jpeg"){
-			 $this->myTempImage = imagecreatefromjpeg($this->tmpPic);
+			 $image = imagecreatefromjpeg($imageFile);
 		  }
 		  if($this->imageFileType == "png"){
-			  $this->myTempImage = imagecreatefromjpeg($this->tmpPic);
+			  $image = imagecreatefrompng($imageFile);
 		  }
 		  if($this->imageFileType == "gif"){
-			  $this->myTempImage = imagecreatefromjpeg($this->tmpPic);
+			  $image = imagecreatefromgif($imageFile);
 		  }
+		  return $imageFile;
+		  
 	  }//createImageFromFile end
+	  
+	  public function createFileName($prefix){
+		  $this->fileName = $prefix .$this->timeStamp ."." .$this->imageFileType;
+	  }
 	  
 	  public function resizeImage($maxPicW, $maxPicH){
 		$imageW = imagesx($this->myTempImage);
 		$imageH = imagesy($this->myTempImage);
-		
+			
 		if($imageW > $maxPicW or $imageH > $maxPicH){
-			if($imageW / $maxPicW > $imageH /$maxPicH){
-				$picSizeRatio = $imageW / $maxPicW;
+			if($maxPicW == $maxPicH){
+				//kui nõutakse ruutu
+				$imageNewW = $maxPicW;
+				$imageNewH = $maxPicH;
 			} else {
-				$picSizeRatio = $imageH / $maxPicH;
+				if($imageW / $maxPicW > $imageH / $maxPicH){
+					$picSizeRatio = $imageW / $maxPicW;
+				} else {
+					$picSizeRatio = $imageH / $maxPicH;
+				}
+				$imageNewW = round($imageW / $picSizeRatio, 0);
+				$imageNewH = round($imageH / $picSizeRatio, 0);
 			}
-			$imageNewW = round($imageW / $picSizeRatio, 0);
-			$imageNewH = round($imageH / $picSizeRatio, 0);
-			$this->myNewImage = $this->setPicSize($this->myTempImage, $imageW, $imageH, $imageNewW, $imageNewH);  
-	   }//resizeImage if statement lõppeb
-	 }//resizeImage lõppeb
+			$this->myNewImage = $this->setPicSize($this->myTempImage, $imageW, $imageH, $imageNewW, $imageNewH);
+		} else {
+			//kui pole piisavalt suur, et vähendada, teeme originaalsuuruses
+			//$this->myNewImage = $this->myTempImage;
+			$this->myNewImage = $this->createImageFromFile($this->picToUpload["tmp_name"]);
+		}
+	  }//resizeImage lõppeb
 	 
-	 private function setPicSize($myTempImage, $imageW, $imageH, $imageNewW, $imageNewH){//läbipaistvus kaob PNG ja GIF
-	  //funkts teeb väiksema pikslikogumi//imagecreatetruecolor=24bitine
-	  $myNewImage = imagecreatetruecolor($imageNewW, $imageNewH);
-	  //pannakse uus image kokku pikslikogumist väiksema resolutsiooniga
-	  imagecopyresampled($myNewImage, $myTempImage, 0, 0, 0, 0, $imageNewW, $imageNewH, $imageW, $imageH);
-	  return $myNewImage;
-     }//setPicSize end
+	 private function setPicSize($myTempImage, $imageW, $imageH, $imageNewW, $imageNewH){
+		$myNewImage = imagecreatetruecolor($imageNewW, $imageNewH);
+		//kui on läbipaistvusega png pildid, siis on vaja säilitada läbipaistvusega
+	    imagesavealpha($myNewImage, true);
+	    $transColor = imagecolorallocatealpha($myNewImage, 0, 0, 0, 127);
+	    imagefill($myNewImage, 0, 0, $transColor);
+		$cutX = 0;
+		$cutY = 0;
+		$cutW = $imageW;
+		$cutH = $imageH;
+		//kui ruudukujuline pilt, siis vaja kärpida ehk õigest kohast lõigata
+		if($imageNewW == $imageNewH){
+			//kui pilt on "landscape"
+			if($imageW > $imageH){
+				$cutX = round(($imageW - $imageH) / 2, 0);
+				$cutY = 0;
+				$cutW = $imageH;
+			} else {
+				$cutX = 0;
+				$cutY = round(($imageH - $imageW) / 2, 0);
+				$cutH = $imageW;
+			}
+		}
+		//nüüd lisame tegeliku pildiinfo
+		imagecopyresampled($myNewImage, $myTempImage, 0, 0, $cutX, $cutY, $imageNewW, $imageNewH, $cutW, $cutH);
+		//imagecopyresampled($myNewImage, $myTempImage, 0, 0, 0, 0, $imageNewW, $imageNewH, $imageW, $imageH);
+		return $myNewImage;
+	  }//setPicSize end
   
 	 public function savePicFile($filename){
 		if($this->imageFileType == "jpg" or $this->imageFileType == "jpeg"){
@@ -76,7 +175,7 @@
 			}
 		}
 		if($this->imageFileType == "gif"){
-			if(imagepng($this->myNewImage, $filename)){
+			if(imagegif($this->myNewImage, $filename)){
 				$notice = "Vähendatud faili salvestamine õnnestus.";
 			} else {
 				$notice = "Vähendatud faili salvestamine ei õnnestunud.";
@@ -84,6 +183,16 @@
 		}
 		imagedestroy($this->myNewImage);
 		return $notice;
-    }//savePicFile end        
+    }//savePicFile end
+
+     public function saveOriginal($target){
+		  $notice = null;
+		  if (move_uploaded_file($this->picToUpload["tmp_name"], $target)) {
+				$notice = "Originaalfaili salvestamine õnnestus!";
+			} else {
+				$notice = "Originaalfaili salvestamine ei õnnestunud!";
+			}
+			return $notice;
+	  }	
 	  
   }//class end
