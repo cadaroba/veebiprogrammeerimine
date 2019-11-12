@@ -11,6 +11,7 @@
   require("../../../config_vp2019.php");
   require("functions_main.php");
   require("functions_user.php");
+  require("functions_pic.php");//näitab viimast pilti sisselogimise lehel
   $database = "if19_robin_ka_1";
   $userName = "Sisselogimata kasutaja";
   
@@ -87,6 +88,7 @@
 	  //echo $photoList[$photoNum];
 	  //<img src="../photos/tlu_terra_600x400_1.jpg" alt="TLÜ Terra õppehoone">
 	  $randomImgHTML = '<img src="' .$photoDir .$photoList[$photoNum] .'" alt="Juhuslik foto">';
+	  $latestPublicPictureHTML = latestPicture(1);//1 on privaatsus 1 ehk avalik
 	  
 	  //sisselogimine
 	  if(isset($_POST["login"])){
@@ -118,9 +120,7 @@
     <h1>Veebiprogrammeerimine</h1>
 	
   <p>Veebileht on loodud õppetöö käigus, ei sisalda tõsiselt võetavat sisu!</p>
-  <?php
-	echo $semesterInfoHTML;
-	?>
+ 
   <hr>
   <?php
     echo "<p>Lehe avamise hetkel oli aeg: " .$fullTimeNow .", ".$partOfDay.".</p>";
@@ -142,6 +142,9 @@
   
   <?php
 	echo $randomImgHTML;
+	echo $semesterInfoHTML;
+	echo $latestPublicPictureHTML;
+	
   ?>
  
  

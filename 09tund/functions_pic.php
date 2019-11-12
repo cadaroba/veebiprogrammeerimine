@@ -18,7 +18,7 @@
 function readAllPublicPics($privacy){
 		$picHTML = null;
 		$conn = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], $GLOBALS["database"]);
-		$stmt = $conn->prepare("SELECT filename, alttext FROM vpphotos WHERE privacy<=? AND deleted IS NULL");
+		$stmt = $conn->prepare("SELECT filename, alttext FROM vpphotos1 WHERE privacy<=? AND deleted IS NULL");
 		echo $conn->error;
 		$stmt->bind_param("i", $privacy);
 		$stmt->bind_result($fileNameFromDb, $altTextFromDb);
@@ -38,7 +38,7 @@ function readAllPublicPics($privacy){
 	function readAllPublicPicsPage($privacy, $page, $limit){
 		$picHTML = null;
 		$conn = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], $GLOBALS["database"]);
-		$stmt = $conn->prepare("SELECT filename, alttext FROM vpphotos WHERE privacy<=? AND deleted IS NULL ORDER BY id DESC LIMIT ?,?");
+		$stmt = $conn->prepare("SELECT filename, alttext FROM vpphotos1 WHERE privacy<=? AND deleted IS NULL ORDER BY id DESC LIMIT ?,?");
 		echo $conn->error;
 		$skip = ($page - 1) * $limit;
 		$stmt->bind_param("iii", $privacy, $skip, $limit);
@@ -59,7 +59,7 @@ function readAllPublicPics($privacy){
 	function countPublicImages($privacy){
 		$notice = null;
 		$conn = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], $GLOBALS["database"]);
-		$stmt = $conn->prepare("SELECT COUNT(*) FROM vpphotos WHERE privacy <= ? AND  deleted IS NULL");
+		$stmt = $conn->prepare("SELECT COUNT(*) FROM vpphotos1 WHERE privacy <= ? AND  deleted IS NULL");
 		echo $conn->error;
 		$stmt->bind_param("i", $privacy);
 		$stmt->bind_result($imageCountFromDb);
@@ -78,7 +78,7 @@ function readAllPublicPics($privacy){
 	function latestPicture($privacy){
 	$html = "<p>Pole pilti, mida näidata!";
 	$conn = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], $GLOBALS["database"]);
-	$stmt = $conn->prepare("SELECT filename, alttext FROM vpphotos WHERE id=(SELECT MAX(id) FROM vpphotos WHERE privacy=? AND deleted IS NULL)");
+	$stmt = $conn->prepare("SELECT filename, alttext FROM vpphotos1 WHERE id=(SELECT MAX(id) FROM vpphotos1 WHERE privacy=? AND deleted IS NULL)");
 	echo $conn->error;
 	$stmt->bind_param("i", $privacy);
 	$stmt->bind_result($filenameFromDb, $altFromDb);
