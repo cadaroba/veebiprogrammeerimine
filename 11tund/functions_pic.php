@@ -71,6 +71,7 @@
 		$stmt->bind_param("i", $privacy);
 		$stmt->bind_result($count);
 		$stmt->execute();
+		$stmt->fetch();
 		$notice = $count;
 
 		

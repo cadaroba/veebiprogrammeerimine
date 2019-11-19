@@ -31,7 +31,7 @@
 	  $page = 1;	  
   } elseif(round($_GET["page"] - 1) * $limit >= $picCount){
 	  $page = ceil($picCount / $limit);
-  }   else {//kui kõik on legaalne ja töötab
+  } else {//kui kõik on legaalne ja töötab
 	  $page = $_GET["page"];
   }
   $galleryHTML = readgalleryImages(2, $page, $limit);
@@ -65,7 +65,7 @@
 		   <label><input id="rate5" name="rating" type="radio" value="5">5</label>
 		   <input type="button" value="Salvesta hinnang" id="storeRating">
   </div>
-  <!--<p><a href="?page=1"> Leht 1</a> | <a href="?page=2"> Leht 2</a></p>-->
+
   
 <p>
 <?php
@@ -80,7 +80,7 @@
 		echo "<span> Järgmine leht</span>  \n";
 	}
 ?>
-  
+    <!--<p><a href="?page=1"> Leht 1</a> | <a href="?page=2"> Leht 2</a></p>-->
   </p>
   <div id="gallery">
     <?php
@@ -90,3 +90,10 @@
   
   <hr>
   <p>Tagasi <a href="home.php">avalehele</a></p>
+
+</body>
+</html>
+  
+  
+  
+  
