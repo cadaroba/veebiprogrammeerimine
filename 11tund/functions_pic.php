@@ -96,5 +96,90 @@
 	$stmt->close();
 	$conn->close();
 	return $html;
-}
+	}
+  
+  function allPublicPictureThumbs($privacy){
+	$html = "";
+	$mysqli = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], $GLOBALS["database"]);
+	$stmt = $mysqli->prepare("SELECT filename, alttext FROM vpphotos1 WHERE privacy<=?  AND deleted IS NULL");
+	echo $mysqli->error;
+	$stmt->bind_param("i", $privacy);
+	$stmt->bind_result($filenameFromDb, $alttextFromDb);
+	$stmt->execute();
+	while($stmt->fetch()){//esile tooma fetchima
+		//<img src="kataloog/pildifail" alt="alttext" >
+		$html .= '<img src="' .$GLOBALS["pic_upload_dir_thumb"] .$filenameFromDb .'" alt= "' .$alttextFromDb .'" >' ."\n";
+	} if(empty($html)){
+		$html = "<p> Vabandame avalikke pilte ei leidu </p> \n";
+	}
+	return $html;
+	$stmt->close();
+	$mysqli->close();
+  }
+	
+  function allPublicPictureThumbsPage($privacy, $page, $limit){
+    $html = "";
+    $skip = ($page -1) * $limit;
+	$mysqli = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], $GLOBALS["database"]);
+	$stmt = $mysqli->prepare("SELECT filename, alttext FROM vpphotos1 WHERE privacy<=? AND deleted IS NULL");
+	echo $mysqli->error;
+	$stmt->bind_param("i", $privacy); 
+	$stmt->bind_result($filenameFromDb, $alttextFromDb);
+	$stmt->execute();
+	while($stmt->fetch()){//esile tooma fetchima
+		//<img src="kataloog/pildifail" alt="alttext" >
+		$html .= '<img src="' .$GLOBALS["pic_upload_dir_thumb"] .$filenameFromDb .'" alt= "' .$alttextFromDb .'" >' ."\n";
+	} if(empty($html)){
+		$html = "<p> Vabandame avalikke pilte ei leidu </p> \n";
+	}
+	return $html;
+	$stmt->close();
+	$mysqli->close();
+  }
+  
+  function allPrivatePictureThumbsPage($privacy, $page, $limit){
+	$html = "";
+	$skip = ($page -1) * $limit;
+	$mysqli = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], $GLOBALS["database"]);
+	$stmt = $mysqli->prepare("SELECT filename, alttext FROM vpphotos1 WHERE privacy<=? AND deleted IS NULL");
+	echo $mysqli->error;
+	$stmt->bind_param("i", $privacy);
+	$stmt->bind_result($filenameFromDb, $alttextFromDb);
+	$stmt->execute();
+	while($stmt->fetch()){//esile tooma fetchima
+		//<img src="kataloog/pildifail" alt="alttext" >
+		$html .= '<img src="' .$GLOBALS["pic_upload_dir_thumb"] .$filenameFromDb .'" alt= "' .$alttextFromDb .'" >' ."\n";
+	} if(empty($html)){
+		$html = "<p> Vabandame privaatseid pilte ei leidu </p> \n";
+	}
+	return $html;
+	$stmt->close();
+	$mysqli->close();
+  }
+  
+  function totalPrivateImages($privacy){
+	$mysqli = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], $GLOBALS["database"]);
+    $stmt = $mysqli->prepare("SELECT COUNT(*) FROM vpphotos1 WHERE privacy<=? AND userid=? AND deleted IS NULL");
+    echo $mysqli->error;
+    $stmt->bind_param("ii", $privacy, $_SESSION["userId"]); //parameetritele
+    $stmt->bind_result($totalPic);
+    $stmt->execute();
+    $stmt->fetch();
+    $stmt->close();
+	$mysqli->close();
+	return $totalPic;
+  }
+  
+  function totalPublicImages($privacy){
+	$mysqli = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], $GLOBALS["database"]);
+	$stmt = $mysqli->prepare("SELECT COUNT(*) FROM vpphotos1 WHERE privacy<=? AND deleted IS NULL");
+	$stmt->bind_param("i", $privacy);
+	$stmt->bind_result($totalPic);
+	$stmt->execute();
+	$stmt->fetch();
+	$stmt->close();
+	$mysqli->close();
+	return $totalPic;	
+  }
+
 ?>
