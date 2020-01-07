@@ -1,0 +1,1 @@
+CREATE TABLE `if19_robin_ka_1`.`peopleInBuilding` ( `peopleAmount` INT(11) NOT NULL , `enterOrExit` INT(1) NOT NULL, `gender` INT(1) NOT NULL , `studentOrTeacher` INT(1) NOT NULL) ENGINE = InnoDB;
